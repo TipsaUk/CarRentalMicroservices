@@ -1,0 +1,36 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    username: car
+    password: rent
+    url: jdbc:postgresql://localhost:5432/car_rental_service
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: groupIdAccount
+    topic:
+      payment: paymentTopic
+      paymentResponse: paymentResponseTopic
+
+  liquibase:
+    enabled: false
+    drop-first: false
+    change-log: src/main/resources/db/changelog/changelog-master.xml
+    default-schema: liquibase
+
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: rental
+
+logging:
+  level:
+    root: info
+
+
