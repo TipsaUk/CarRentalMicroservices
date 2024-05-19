@@ -23,7 +23,6 @@ public class Client {
     private String surname;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy="client")
-    //@JoinColumn(name = "id", referencedColumnName = "client_id")
     private Document document;
 
 }

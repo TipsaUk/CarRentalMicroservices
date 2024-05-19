@@ -93,4 +93,5 @@ public class RentalServiceImpl implements RentalService {
         }
         rentalRepository.save(carRental);
     }
+
 }

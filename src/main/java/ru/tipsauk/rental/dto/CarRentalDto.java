@@ -18,7 +18,7 @@ public class CarRentalDto {
 
     private ClientDto client;
 
-    private Car car;
+    private CarDto car;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date startDate;
@@ -27,5 +27,9 @@ public class CarRentalDto {
     private Date endDate;
 
     private RentalStatus status;
+
+    private boolean paid;
+
+    private String bankPaymentId;
 
 }

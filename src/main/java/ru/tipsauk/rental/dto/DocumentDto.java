@@ -16,8 +16,6 @@ public class DocumentDto {
 
     private long id;
 
-    private ClientDto client;
-
     private String series;
 
     private String number;
