@@ -1,5 +1,5 @@
 package ru.tipsauk.rental.entity;
 
 public enum RentalStatus {
-    BOOKED, RENTED
+    UNPAID, BOOKED, RENTED, CANCELLED
 }

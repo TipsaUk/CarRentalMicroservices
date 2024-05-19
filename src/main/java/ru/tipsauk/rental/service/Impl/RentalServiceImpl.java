@@ -1,17 +1,21 @@
 package ru.tipsauk.rental.service.Impl;
 
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.tipsauk.rental.dto.CarRentalDto;
+import ru.tipsauk.rental.dto.RentalFeeDto;
 import ru.tipsauk.rental.entity.CarRental;
+import ru.tipsauk.rental.entity.RentalStatus;
 import ru.tipsauk.rental.exception.EntityOperationException;
 import ru.tipsauk.rental.exception.EntityUpdateException;
 import ru.tipsauk.rental.mapper.CarRentalMapper;
 import ru.tipsauk.rental.repository.RentalRepository;
 import ru.tipsauk.rental.service.RentalService;
-import ru.tipsauk.rental.service.kafka.KafkaProducerService;
+import ru.tipsauk.rental.service.kafka.Impl.KafkaProducerServiceImpl;
+import ru.tipsauk.rental.util.PaymentGenerator;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,7 +30,7 @@ public class RentalServiceImpl implements RentalService {
 
     private final RentalRepository rentalRepository;
 
-    private final KafkaProducerService kafkaProducerService;
+    private final KafkaProducerServiceImpl kafkaProducerServiceImpl;
 
     private final CarRentalMapper carRentalMapper;
 
@@ -48,7 +52,11 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public CarRental create(CarRentalDto carRentalDto) {
         log.info("RentalServiceImpl: create(CarRentalDto carRentalDto), " + carRentalDto + " (Start method)");
-        return rentalRepository.save(carRentalMapper.carRentalDtoToCarRental(carRentalDto));
+        carRentalDto.setStatus(RentalStatus.UNPAID);
+        CarRental carRental = rentalRepository.save(carRentalMapper.carRentalDtoToCarRental(carRentalDto));
+        kafkaProducerServiceImpl.sendRentalFee(paymentTopic, new RentalFeeDto(carRental.getId()
+                , PaymentGenerator.generateSumPayment()));
+        return carRental;
     }
 
     @Override
@@ -57,7 +65,6 @@ public class RentalServiceImpl implements RentalService {
         if (carRentalDto.getId() == 0) {
             throw new EntityUpdateException("No id is specified for the car rental");
         }
-        kafkaProducerService.send(paymentTopic, String.valueOf(carRentalDto.getId()));
         return rentalRepository.save(carRentalMapper.carRentalDtoToCarRental(carRentalDto));
     }
 
@@ -68,5 +75,22 @@ public class RentalServiceImpl implements RentalService {
             throw new EntityOperationException("Car rental not found by id " + id);
         }
         rentalRepository.deleteById(id);
+    }
+
+    @Override
+    public void confirmRentalPayment(RentalFeeDto rentalFeeDto) {
+        long id = rentalFeeDto.getRentId();
+        log.info("RentalServiceImpl: confirmRentalPayment(RentalFeeDto rentalFeeDto), id = "
+                + id + " (Start method)");
+        CarRental carRental = rentalRepository.findById(id).orElseThrow(()
+                -> new EntityOperationException("Car rental not found by id " + id));
+        if (rentalFeeDto.isPaid()) {
+            carRental.setStatus(RentalStatus.BOOKED);
+            carRental.setPaid(rentalFeeDto.isPaid());
+            carRental.setBankPaymentId(rentalFeeDto.getBankPaymentId());
+        } else {
+            carRental.setStatus(RentalStatus.CANCELLED);
+        }
+        rentalRepository.save(carRental);
     }
 }

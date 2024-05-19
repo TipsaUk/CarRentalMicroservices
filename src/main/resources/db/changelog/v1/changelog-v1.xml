@@ -13,6 +13,8 @@
     <include file="table/create-car_rental-table.xml" relativeToChangelogFile="true"/>
     <include file="table/create-foreign-key.xml" relativeToChangelogFile="true"/>
     <include file="initial-data/insert_data_car_table.xml" relativeToChangelogFile="true"/>
+    <include file="initial-data/insert_data_client_table.xml" relativeToChangelogFile="true"/>
+    <include file="initial-data/insert_data_document_table.xml" relativeToChangelogFile="true"/>
 
 
 

@@ -1,6 +1,6 @@
-package ru.tipsauk.rental.service.kafka;
+package ru.tipsauk.payment.service.kafka;
 
-import ru.tipsauk.rental.dto.RentalFeeDto;
+import ru.tipsauk.payment.dto.RentalFeeDto;
 
 public interface KafkaProducerService {
 

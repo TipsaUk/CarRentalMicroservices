@@ -31,7 +31,13 @@ public class CarRental {
     private Date endDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", columnDefinition = "enum('BOOKED', 'RENTED')", nullable = false)
+    @Column(name = "status", columnDefinition = "enum('UNPAID', BOOKED', 'RENTED')", nullable = false)
     private RentalStatus status;
+
+    @Column(name = "paid")
+    private boolean paid;
+
+    @Column(name = "bank_payment_id")
+    private String bankPaymentId;
 
 }

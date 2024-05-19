@@ -22,9 +22,12 @@
             </column>
             <column name="start_date" type="date" />
             <column name="end_date" type="date" />
-
             <column name="status" type="varchar(255)">
                 <constraints nullable="false"/>
+            </column>
+            <column name="paid" type="boolean" defaultValue="false" />
+            <column name="bank_payment_id" type="varchar(255)">
+                <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>

@@ -18,8 +18,9 @@ public class Document {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    // TODO проверить правильность указания JoinColumn
     @OneToOne
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @JoinColumn(name = "client_id", referencedColumnName = "id", unique = true, nullable = false)
     private Client client;
 
     @Column(name = "series", nullable = false)

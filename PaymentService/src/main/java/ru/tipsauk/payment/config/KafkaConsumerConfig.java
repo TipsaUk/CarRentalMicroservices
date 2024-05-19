@@ -1,4 +1,4 @@
-package ru.tipsauk.rental.config;
+package ru.tipsauk.payment.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -10,7 +10,7 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
-import ru.tipsauk.rental.dto.RentalFeeDto;
+import ru.tipsauk.payment.dto.RentalFeeDto;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,9 +33,9 @@ public class KafkaConsumerConfig {
         consumerProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         consumerProps.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
 
-        return new DefaultKafkaConsumerFactory<>(consumerProps, new StringDeserializer(),
+    return new DefaultKafkaConsumerFactory<>(consumerProps, new StringDeserializer(),
                 new JsonDeserializer<>(RentalFeeDto.class, false));
-    }
+}
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, RentalFeeDto> rentalFeeKafkaListenerContainerFactory() {
@@ -44,6 +44,5 @@ public class KafkaConsumerConfig {
         factory.setConsumerFactory(rentalFeeConsumerFactory());
         return factory;
     }
-
 
 }

@@ -1,0 +1,25 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="addClients" author="Andrey">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*)
+                                         FROM rental.client</sqlCheck>
+        </preConditions>
+        <insert schemaName="rental" tableName="client">
+            <column name="name" value="Александр"/>
+            <column name="surname" value="Самойлов"/>
+        </insert>
+        <insert schemaName="rental" tableName="client">
+            <column name="name" value="Валентин"/>
+            <column name="surname" value="Исаев"/>
+        </insert>
+        <insert schemaName="rental" tableName="client">
+            <column name="name" value="Николай"/>
+            <column name="surname" value="Воронов"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

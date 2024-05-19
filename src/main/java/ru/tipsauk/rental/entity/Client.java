@@ -22,8 +22,8 @@ public class Client {
     @Column(name = "surname", nullable = false)
     private String surname;
 
-    @OneToOne
-    @JoinColumn(name = "id", referencedColumnName = "client_id")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy="client")
+    //@JoinColumn(name = "id", referencedColumnName = "client_id")
     private Document document;
 
 }
