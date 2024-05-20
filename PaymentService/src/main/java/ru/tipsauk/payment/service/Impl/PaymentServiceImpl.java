@@ -19,7 +19,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final KafkaProducerService kafkaProducerService;
 
     @Override
-    public boolean createRentalPayment(RentalFeeDto rentalFeeDto) {
+    public void createRentalPayment(RentalFeeDto rentalFeeDto) {
         log.info("Create rental payment: rent id: " + rentalFeeDto.getRentId()
                 + " amount: " + rentalFeeDto.getAmount());
         // some logic for creating a payment...
@@ -30,7 +30,6 @@ public class PaymentServiceImpl implements PaymentService {
             throw new RuntimeException(e);
         }
         completeRentalPayment(rentalFeeDto);
-        return true;
     }
 
     @Override

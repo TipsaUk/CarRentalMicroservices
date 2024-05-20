@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:latest:///car_rental_service
+    username: car
+    password: rent
+  liquibase:
+    enabled: true
+    change-log: /db/changelog/changelog-master.xml

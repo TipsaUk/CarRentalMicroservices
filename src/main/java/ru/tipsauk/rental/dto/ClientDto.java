@@ -9,6 +9,9 @@ import ru.tipsauk.rental.entity.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ClientDto {
+    public ClientDto(long id) {
+        this.id = id;
+    }
 
     private long id;
 

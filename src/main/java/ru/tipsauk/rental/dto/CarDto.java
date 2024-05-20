@@ -10,6 +10,10 @@ import ru.tipsauk.rental.entity.Transmission;
 @AllArgsConstructor
 public class CarDto {
 
+    public CarDto(long id) {
+        this.id = id;
+    }
+
     private long id;
 
     private String brand;
